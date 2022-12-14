@@ -6,12 +6,22 @@ var Exports = {
   get Unit() {
     return bmUnitTester.Unit
   },
+
   /**
-   * Store class
-   * @implements {bmPreCache.Exports.Store} 
+   * Store Class
+   * @implements {bmPreCache.Store} 
    */
-  get Store() {
+  get Store () {
     return bmPreCache.Exports.Store
+  },
+
+  /**
+   * Store instance with validation
+   * @param {...*} args
+   * @return {Store}
+   */
+  newStore: (...args)  => {
+    return bmPreCache.Exports.newStore (...args)
   },
 
   /**
