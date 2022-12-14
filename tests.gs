@@ -11,7 +11,7 @@ const unitTest = () => {
   // use these for general tests
   const log = false
 
-  const user = new Exports.Store({
+  const user = Exports.newStore({
     store: PropertiesService.getUserProperties(),
     log,
     evictAfter: 1000
@@ -54,8 +54,17 @@ const unitTest = () => {
 
   const skips = {
     props: false,
-    preCache: true
+    preCache: false,
+    validateProps: false
   }
+  unit.section (()=> {
+    unit.not (null, unit.threw (()=> user.badProp), {
+      description: 'throws on non existnt property'
+    })
+    unit.is (null, unit.threw (()=>user.get('x')), {
+      description: 'doesnt throw on  existing property'
+    })
+  })
   unit.section(() => {
     // comibine props tests
     // do this 3 times, compare times
