@@ -7,7 +7,7 @@ const unitTest = () => {
   const unit = new Exports.Unit({
     showErrorsOnly: true
   })
-  
+
   // use these for general tests
   const log = false
 
@@ -57,22 +57,29 @@ const unitTest = () => {
     preCache: false,
     validateProps: false
   }
-  unit.section (()=> {
-    unit.not (null, unit.threw (()=> user.badProp), {
+
+  unit.section(() => {
+
+    unit.not(null, unit.threw(() => user.badProp), {
       description: 'throws on non existnt property'
     })
-    unit.is (null, unit.threw (()=>user.get('x')), {
+    unit.is(null, unit.threw(() => user.get('x')), {
       description: 'doesnt throw on  existing property'
     })
+  }, {
+    description: 'check proxy installed',
+    skip: skips.validateProps
   })
+  unit.report()
+
   unit.section(() => {
     // comibine props tests
     // do this 3 times, compare times
 
     for (let x = 0; x < 2; x++) {
       const now = new Date().getTime();
-      [ user, script, userCache,scriptCache].forEach(p => {
-       
+      [user, script, userCache, scriptCache].forEach(p => {
+
         keys.forEach((k, i) => {
           if (x < 1) {
             // final timing test doesnt include a set
@@ -141,13 +148,14 @@ const unitTest = () => {
     unit.is(null, ps.get(k4), {
       description: 'k4 was evicted'
     })
+    console.log('precaches', 'pc', pc.report())
   }, {
     description: 'precaching',
     skip: skips.preCache
   })
 
 
-
+  console.log('precaches', 'script', script.report(), 'user', user.report(), 'userCache', userCache.report())
 
   unit.report()
 
