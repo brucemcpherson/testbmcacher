@@ -5,7 +5,8 @@
 
 const unitTest = () => {
   const unit = new Exports.Unit({
-    showErrorsOnly: true
+    showErrorsOnly: true,
+    neverUndefined: false
   })
 
   // use these for general tests
@@ -63,6 +64,9 @@ const unitTest = () => {
     unit.not(null, unit.threw(() => user.badProp), {
       description: 'throws on non existnt property'
     })
+    unit.is(null,  user.get('x'), {
+      description: 'doesnt throw on  existing property'
+    })
     unit.is(null, unit.threw(() => user.get('x')), {
       description: 'doesnt throw on  existing property'
     })
@@ -107,7 +111,7 @@ const unitTest = () => {
   unit.section(() => {
     const pc = new Exports.PreCache({ log: false })
 
-    unit.is(null, pc.get(k1), {
+    unit.is(undefined, pc.get(k1), {
       description: 'should be empty'
     })
 
@@ -133,7 +137,7 @@ const unitTest = () => {
       description: 'no room for k2'
     })
 
-    unit.is(null, ps.get(k2), {
+    unit.is(undefined, ps.get(k2), {
       description: 'k2 is null - no room'
     })
 
@@ -145,7 +149,7 @@ const unitTest = () => {
       description: 'k4 is ok'
     })
     Utilities.sleep(2000)
-    unit.is(null, ps.get(k4), {
+    unit.is(undefined, ps.get(k4), {
       description: 'k4 was evicted'
     })
     console.log('precaches', 'pc', pc.report())
